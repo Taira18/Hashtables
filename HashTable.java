@@ -26,7 +26,7 @@ public class HashTable {
 		} else {
 			int r;
 			int h = 0;
-			for (int i = 0;i <= key.length(); i++) {
+			for (int i = 0;i < key.length(); i++) {
 				char k = key.charAt(i);
 				r = k;
 				h = h+r;
@@ -41,24 +41,28 @@ public class HashTable {
 	 * at the head of each linked list for ease of implementation.
 	 */
 	public void insert(String key) {
-		int r;
-		int h = 0;
-		int j;
-		for (int i = 0;i <= key.length(); i++) {
-			char k = key.charAt(i);
-			r = k;
-			h = h+r;
+		int k = hash(key);
+		Node newNode = new Node(key);
+		Node temp = map[k];
+		map[k] = newNode;
+		newNode.next = temp;
 		}
-		j = h%8;
-		
-	}
 	
 	/*
 	 * This method returs true if the search key is contained in the
 	 * hash table, and false otherwise.
 	 */
 	public boolean search(String key) {
-		// your code here
+		int k = hash(key);
+		Node pointer = map[k];
+		while (pointer != null) {
+			if (pointer.record == key) {
+				return true;
+			} else {
+				pointer = pointer.next;
+			}
+		}
+		return false;
 	}
 	
 	/*
@@ -71,8 +75,18 @@ public class HashTable {
 	 * 1: Nicholas Mary Kim Jack
 	 */
 	public void printTable() {
-		for (int i = 0; i<=tableSize;i++) {
-			
+		for (int i = 0; i < tableSize; i++) {
+			Node pointer = map[i];
+			System.out.print("\n");
+			System.out.print(i + ":");
+			while (pointer != null) {
+				if (pointer.record != null) {
+				System.out.print(pointer.record + " ");
+				pointer = pointer.next;
+				} else {
+					pointer = pointer.next;
+				}
+			}		
 		}
 	}
 	
@@ -80,7 +94,15 @@ public class HashTable {
 	 * This method should delete ALL nodes matching the search key.
 	 */
 	public void delete(String key) {
-		// your code here
+		int k = hash(key);
+		Node pointer = map[k];
+		while(pointer != null) {
+			if (pointer.record == key) {
+				pointer.record = null;
+			} else {
+				pointer = pointer.next;
+			}
+		}	
 	}
 	
 }
